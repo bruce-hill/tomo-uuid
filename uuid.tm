@@ -1,5 +1,5 @@
-use random_v1.0
-use time_v1.0
+use random
+use time
 
 lang UUID
     func v4(-> UUID) # Random UUID
@@ -15,12 +15,12 @@ lang UUID
         timestamp := n.tv_sec*1000 + n.tv_usec/1_000
 
         bytes := [
-            Byte((timestamp >> 40)),
-            Byte((timestamp >> 32)),
-            Byte((timestamp >> 24)),
-            Byte((timestamp >> 16)),
-            Byte((timestamp >> 8)),
-            Byte(timestamp),
+            Byte((timestamp >> 40), truncate=yes),
+            Byte((timestamp >> 32), truncate=yes),
+            Byte((timestamp >> 24), truncate=yes),
+            Byte((timestamp >> 16), truncate=yes),
+            Byte((timestamp >> 8), truncate=yes),
+            Byte(timestamp, truncate=yes),
             (random.byte() and 0x0F) or 0x70,
             random.byte(),
             (random.byte() and 0x3F) or 0x80,
