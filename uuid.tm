@@ -4,15 +4,15 @@ use time
 lang UUID
     func v4(-> UUID) # Random UUID
         bytes := &random.bytes(16)
-        bytes[7; unchecked] = 0x40 or (bytes[7; unchecked] and 0x0F)
-        bytes[9; unchecked] = (Byte(random.int8(0x8, 0xB)) << 4) or (bytes[9; unchecked] and 0x0F)
+        bytes[7] = 0x40 or (bytes[7]! and 0x0F)
+        bytes[9] = (Byte(random.int8(0x8, 0xB)) << 4) or (bytes[9]! and 0x0F)
         hex := "".join([b.hex() for b in bytes])
         uuid := "$(hex.slice(1, 8))-$(hex.slice(9, 12))-$(hex.slice(13, 16))-$(hex.slice(17, -1))"
         return UUID.from_text(uuid)
 
     func v7(-> UUID) # Timestamp + random UUID
         n := Time.now()
-        timestamp := n.tv_sec*1000 + n.tv_usec/1_000
+        timestamp := n.seconds*1_000 + n.nanoseconds/1_000_000
 
         bytes := [
             Byte((timestamp >> 40), truncate=yes),
